@@ -1,0 +1,15 @@
+# ---- dependencies (reinstall with composer install / npm ci) ----
+backend/vendor/
+frontend/node_modules/
+
+# ---- secrets: NEVER commit real credentials ----
+backend/.env
+frontend/.env
+
+# ---- user-generated content ----
+backend/public/storage/*
+!backend/public/storage/.gitkeep
+
+# ---- misc ----
+.DS_Store
+*.log

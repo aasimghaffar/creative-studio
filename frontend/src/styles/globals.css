@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Class-based dark mode (toggled by ThemeProvider on <html>) */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * AI Creative Studio — "drafting table" design system (from design prototype)
+ * Light: warm paper, ink text, brass accents.
+ * Dark:  blueprint navy panels, mist text, brass + teal accents.
+ */
+:root {
+  --radius: 0.375rem; /* prototype uses 2–6px corners */
+
+  --background: #f2eee4; /* paper */
+  --foreground: #1b1b18; /* ink */
+  --card: #f2eee4;
+  --card-foreground: #1b1b18;
+  --popover: #f7f4ec;
+  --popover-foreground: #1b1b18;
+  --primary: #1b1b18; /* ink buttons, brass on hover */
+  --primary-foreground: #f2eee4;
+  --secondary: #ebe6d8;
+  --secondary-foreground: #1b1b18;
+  --muted: #e7e1d2;
+  --muted-foreground: #6b675c; /* ink-soft */
+  --accent: #ebe6d8;
+  --accent-foreground: #1b1b18;
+  --destructive: #b04a35;
+  --destructive-foreground: #f2eee4;
+  --border: #dad3c2; /* paper-line */
+  --input: #dad3c2;
+  --ring: #b8823c; /* brass */
+  --sidebar: #f2eee4;
+  --sidebar-foreground: #1b1b18;
+  --sidebar-border: #dad3c2;
+}
+
+.dark {
+  --background: #12232b; /* blueprint */
+  --foreground: #edeae1; /* paper-on-dark */
+  --card: #182e37; /* blueprint panel */
+  --card-foreground: #edeae1;
+  --popover: #182e37;
+  --popover-foreground: #edeae1;
+  --primary: #b8823c; /* brass */
+  --primary-foreground: #12232b;
+  --secondary: #1e3844; /* blueprint panel 2 */
+  --secondary-foreground: #edeae1;
+  --muted: #1e3844;
+  --muted-foreground: #9fb2ba; /* mist */
+  --accent: #1e3844;
+  --accent-foreground: #edeae1;
+  --destructive: #c4694f;
+  --destructive-foreground: #12232b;
+  --border: rgba(237, 234, 225, 0.09); /* blueprint-line */
+  --input: rgba(237, 234, 225, 0.14);
+  --ring: #b8823c;
+  --sidebar: #12232b;
+  --sidebar-foreground: #edeae1;
+  --sidebar-border: rgba(237, 234, 225, 0.09);
+}
+
+/* Map CSS variables to Tailwind theme tokens (Tailwind v4) */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+}
+
+/* Prototype palette as first-class utilities (bg-paper, text-brass, …) */
+@theme {
+  --color-paper: #f2eee4;
+  --color-paper-line: #dad3c2;
+  --color-paper-hover: #ebe6d8;
+  --color-ink: #1b1b18;
+  --color-ink-soft: #6b675c;
+  --color-brass: #b8823c;
+  --color-brass-deep: #8c6329;
+  --color-blueprint: #12232b;
+  --color-bp-panel: #182e37;
+  --color-bp-panel-2: #1e3844;
+  --color-bp-line: rgba(237, 234, 225, 0.09);
+  --color-mist: #9fb2ba;
+  --color-paper-dark: #edeae1; /* paper-on-dark */
+  --color-teal: #4c9186;
+
+  /* Type: Fraunces for display, IBM Plex Sans body, IBM Plex Mono labels */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  /* Accessibility: respect users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@layer utilities {
+  /* Mono eyebrow label, used across landing + shell */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Signature hairline (was prism-line): single brass rule */
+  .prism-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-brass) 30%, var(--color-brass) 70%, transparent);
+    opacity: 0.55;
+  }
+
+  /* Blueprint grid (for dark panels) */
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--color-bp-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-bp-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Drafting-corner brackets (parent must be relative) */
+  .peg-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--color-mist);
+    opacity: 0.5;
+  }
+  .peg-corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  .peg-corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+  .peg-corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+  .peg-corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+  /* Logo marquee */
+  .animate-marquee {
+    animation: marquee 32s linear infinite;
+  }
+  .marquee-mask {
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
